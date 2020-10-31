@@ -15,5 +15,33 @@ int lengthOfLIS(vector<int>& nums) {
                     dp[i] = max(dp[i],dp[j]+1);
             }
         }
-        return *max_element(dp.begin(),dp.end());
-    
+        return *max_element(dp.begin(),dp.end());  
+}
+
+vector<int> LIS(vector<int> dp,vector<int> nums)
+{
+        int mx=1,index=0;
+        for(int i=0;i<n;i++)
+        {
+            if(mx<lis[i])
+            {
+                mx = lis[i];
+                index = i;
+            }
+        }
+        cout<<mx<<endl;
+        
+        vector<int> v;
+        v.push_back(arr[index]);
+        mx--;
+        for(int i=index;i>=0;i--)
+        {
+            if(lis[i]==mx && arr[i]<v[v.size()-1])
+            {
+                v.push_back(arr[i]);
+                mx--;
+            }
+        }
+        reverse(v.begin(),v.end());
+        return v;
+}
