@@ -1,0 +1,41 @@
+//https://leetcode.com/problems/n-queens/
+
+#include<bits/stdc++.h>
+using namespace std;
+
+bool issafe(vector<string> &b,int r,int c,int &n)
+    {
+        for(int i=0;i<n;i++)
+            if(b[i][c] == 'Q')
+                return 0;
+        for (int i = r-1,j = c - 1; i >= 0 && j >= 0; i--, j--)
+            if (b[i][j] == 'Q')
+                return 0;
+        for (int i = r - 1, j = c + 1; i >= 0 && j < n; i--, j++)
+            if (b[i][j] == 'Q')
+                return 0;
+        return 1;
+    }
+    void fun(vector<string> &b,int r,int c,int &n,vector<vector<string>> &ans)
+    {
+        if(r==n)
+        {
+            ans.push_back(b);
+            return;
+        }
+        for(int j=0;j<n;j++)
+        {
+            if(issafe(b,r,j,n))
+            {
+                b[r][j] = 'Q';
+                fun(b,r+1,j,n,ans);
+                b[r][j] = '.'; 
+            }
+        }
+    }
+    vector<vector<string>> solveNQueens(int n) {
+        vector<vector<string>> ans;
+        vector<string> b(n,string(n,'.'));
+        fun(b,0,0,n,ans);
+        return ans;
+    }
