@@ -1,0 +1,60 @@
+#include <bits/stdc++.h>
+using namespace std;
+vector<int> fun(vector<pair< int, pair< int , int > > > g[],int c,int n)
+{
+    vector<int> v;
+    vector<bool> vis(n+1,0);
+    priority_queue<pair< int, pair< int , int> >,vector<pair< int ,pair< int , int > > >,greater< pair< int, pair< int , int> > > >pq;
+    pq.push({0,{0,1}});
+    //vis[1]=1;
+    while(!pq.empty())
+    {
+        pair< int , pair< int , int > > temp= pq.top();
+        pq.pop();
+        int cost = temp.first;
+        int l = temp.second.first;
+        int u = temp.second.second;
+        if(u==n && cost<=c)
+        {
+            v.push_back(l);
+            //v.push_back(cost);
+        }
+        vis[u]=1;
+        for(int i=0;i<g[u].size();i++)
+        {
+            if(!vis[g[u][i].first])
+                pq.push({cost+g[u][i].second.second,{l+g[u][i].second.first,g[u][i].first}});
+        }
+    }
+    return v;
+}
+
+
+
+int main() {
+    int m;
+    cin>>m;
+    while(m--)
+    {
+        int c,n,r;
+        cin>>c>>n>>r;
+        vector< pair< int , pair< int , int > > >g[n+1];
+        for(int i=0;i<r;i++)
+        {
+            int s,d,l,t;
+            cin>>s>>d>>l>>t;
+            g[s].push_back({d,{l,t}});
+        }
+        vector<int> v = fun(g,c,n);
+        if(v.size()==0)
+            cout<<-1<<endl;
+        else
+        {
+            cout<<*min_element(v.begin(),v.end())<<endl;
+            //for(int i=0;i<v.size();i++)
+              //  cout<<v[i]<<" ";
+        }
+            
+    }
+    return 0;
+}
