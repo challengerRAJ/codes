@@ -1,0 +1,54 @@
+class Solution {
+public:
+    int checkDFS(vector<vector<int>> &graph, int u, vector<int> &color, int currColor)
+    {
+        color[u] = currColor;
+        for(int v=0;v<graph[u].size();v++)
+        {
+            if(currColor == color[graph[u][v]])
+                return 0;
+            if(color[graph[u][v]]==-1)
+            {
+                if(checkDFS(graph, graph[u][v],color, 1-currColor)==0)
+                    return 0;
+            }
+        }
+        return 1;
+    }
+    int checkBFS(vector<vector<int>> &graph, int u, vector<int> &color, int currColor)
+    {
+        int n = graph.size();
+        color[u] = currColor;
+        queue<int> q;
+        q.push(u);
+        while(!q.empty())
+        {
+            int qu = q.front();
+            q.pop();
+            for(int v=0;v<graph[qu].size();v++)
+            {
+                if(color[graph[qu][v]]==color[qu])
+                    return 0;
+                else if(color[graph[qu][v]]==-1)
+                {
+                    color[graph[qu][v]]=1-color[qu];
+                    q.push(graph[qu][v]);
+                }
+            }
+        }
+        return 1;
+    }
+    bool isBipartite(vector<vector<int>>& graph) {
+        int n = graph.size();
+        vector<int> color(n, -1);
+        for(int i=0;i<n;i++)
+        {
+            if(color[i]==-1)
+            {
+                if(checkBFS(graph, i, color, 1)==0)
+                    return 0;
+            }
+        }
+        return 1;
+    }
+};
